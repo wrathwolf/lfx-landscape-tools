@@ -4,6 +4,9 @@ inputs:
   project_processing:
     description: "Indicate for project processing, if they should be 'rebuild' or 'sync' ( or 'skip' to not build projects )"
     default: "sync"
+  member_processing:
+    description: "Indicate for member processing, if they should be 'build' or 'sync'"
+    default: "build"
   configfile:
     description: "Filename for the config file ( defaults to config.yml )"
     default: "config.yml"
@@ -45,9 +48,20 @@ runs:
       working-directory: ./landscape-tools
       run: poetry install
     - name: Build members from LFX
+      if: ${{ inputs.member_processing == 'build' }}
       working-directory: ./landscape-tools
       shell: bash
       run: poetry run lfx_landscape -s -l debug --logfile $LOGFILE build_members  -c ../landscape/$CONFIGFILE
+      env:
+        GITHUB_TOKEN: ${{ env.token }}
+        GH_TOKEN: ${{ env.token }}
+        CONFIGFILE: ${{ inputs.configfile }}
+        LOGFILE: ${{ inputs.logfile }}
+    - name: Sync members from LFX
+      if: ${{ inputs.member_processing == 'sync' }}
+      working-directory: ./landscape-tools
+      shell: bash
+      run: poetry run lfx_landscape -s -l debug --logfile $LOGFILE sync_members  -c ../landscape/$CONFIGFILE
       env:
         GITHUB_TOKEN: ${{ env.token }}
         GH_TOKEN: ${{ env.token }}
@@ -114,7 +128,9 @@ runs:
       working-directory: ./landscape
       shell: bash
       run: |
-        gh pr merge --squash --auto "${{ steps.cpr.outputs.pull-request-number }}" \
-        || gh pr merge --squash "${{ steps.cpr.outputs.pull-request-number }}"
+        if [ "$(gh api repos/${{ env.repository }} --jq '.allow_auto_merge')" = "true" ]; then
+          gh pr merge --squash --auto "${{ steps.cpr.outputs.pull-request-number }}" \
+          || gh pr merge --squash "${{ steps.cpr.outputs.pull-request-number }}"
+        fi
       env:
         GH_TOKEN: ${{ env.token }}
