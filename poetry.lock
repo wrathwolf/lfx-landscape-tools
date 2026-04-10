@@ -1331,4 +1331,4 @@ crypto-eth-addresses = ["eth-hash[pycryptodome] (>=0.7.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">= 3.12"
-content-hash = "4186204fb26f84b29be8a5cafd934b1a7bfd43482c0796ec8c361f4d790de9f7"
+content-hash = "b18fdd857488b2d6d0348a7e87e7207f25c4e98bf4010a5279e9aabae9a17d73"
