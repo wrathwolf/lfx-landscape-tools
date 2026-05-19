@@ -58,7 +58,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: jmertic/lfx-landscape-tools@690d3a52ceb2092e17ab2b7f51040fddcfa87697 # 20260427
+      - uses: jmertic/lfx-landscape-tools@c17f36faab366e19935ecb8163b402913d5bc7b1 # 20260518
         with:
           project_processing: skip # see options in action.yml
         env:
@@ -181,4 +181,4 @@ You can then use the `lfx_landscape` command to run the various commands. Use `l
 
 ## Contributing
 
-Feel free to send [issues](/issues) or [pull requests](/pulls) ( with a DCO signoff of course :-) ) in accordance with the [contribution guidelines](CONTRIBUTING.md)
+Feel free to send [issues](https://github.com/jmertic/lfx-landscape-tools/issues) or [pull requests](https://github.com/jmertic/lfx-landscape-tools/pulls) ( with a DCO signoff of course :-) ) in accordance with the [contribution guidelines](CONTRIBUTING.md)
